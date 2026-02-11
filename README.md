@@ -1,35 +1,65 @@
-# Country_app
+# Country App
 
-Pratique des API
+![Capture d'écran](./capture%20d%27%C3%A9cran.png)
 
-// 1 - Tester le lien de l'API dans le navigateur (https://restcountries.com/v3.1/all)
+Démo : https://projetsdevfanny.github.io/TP9_FromScratch_Country_app_JS/
 
-// 2 - Créer une fonction pour "fetcher" les données, afficher les données dans la console.
+Projet d'entraînement pour pratiquer les API, le `fetch` et la manipulation du DOM.
 
-// 3 - Passer les données à une variable
+## Objectif
 
-// 4 - Créer une fonction d'affichage, et paramétrer l'affichage des cartes de chaque pays grace à la méthode MAP
+Afficher une liste de pays (cartes) issue de l'API Rest Countries, avec recherche,
+tri et contrôle du nombre de résultats.
 
-// 5 - Récupérer ce qui est tapé dans l'input et filtrer (avant le map) les données
-coutry.name.includes(inputSearch.value);
+## API utilisée -> A tester dans le navigateur
 
-// 6 - Avec la méthode Slice gérer le nombre de pays affichés (inputRange.value)
+Rest Countries v3.1 :
+`https://restcountries.com/v3.1/all?fields=name,capital,cca3,flags,region,population,translations`
 
-// 7 - Gérer les 3 boutons pour trier (méthode sort()) les pays
+## Fonctionnalités
 
-//s'appuyez sur l'architecture de l'application de cuisine
+- Chargement des pays via `fetch`
+- Affichage des cartes pays
+- Recherche par nom de pays
+- Tri par population, nom ou région
+- Limitation du nombre de cartes via un range
 
-// Architecture de la fonction d'affichage
-countriesContainer.innerHtml = monTableau
-.filter((country) => country.nomdupays.includes(inputSearch.value))
-.sort((a,b) => {
-if(...) {
-return ...
-} else if (...) {
-return ...
-}
-})
-.slice(0, inputRange.Value)
-<!-- .map((country) => `    <div class="card">
+## Structure conseillée (logique de rendu)
+
+1. Récupérer les données et les stocker dans un tableau.
+2. Filtrer selon la recherche.
+3. Trier selon le bouton actif.
+4. Limiter le nombre de résultats.
+5. Mapper vers le HTML des cartes.
+
+Exemple de pipeline de rendu :
+
+```js
+countriesContainer.innerHTML = countriesData
+  .filter((country) =>
+    country.name.common.toLowerCase().includes(inputSearch.value.toLowerCase())
+  )
+  .sort((a, b) => {
+    if (sortBy === "population") return b.population - a.population;
+    if (sortBy === "name") return a.name.common.localeCompare(b.name.common);
+    if (sortBy === "region") return a.region.localeCompare(b.region);
+    return 0;
+  })
+  .slice(0, Number(inputRange.value))
+  .map((country) => `
+    <div class="card">
+      <img src="${country.flags.svg}" alt="Drapeau de ${country.name.common}">
+      <h2>${country.translations.fra.common}</h2>
+      <p>Capitale : ${country.capital?.[0] ?? "N/A"}</p>
+      <p>Population : ${country.population.toLocaleString()}</p>
+      <p>Région : ${country.region}</p>
     </div>
-   `) -->
+  `)
+  .join("");
+```
+
+## À tester
+
+1. Ouvrir `index.html` dans le navigateur.
+2. Vérifier que les pays s'affichent.
+3. Tester la recherche, le tri et le range.

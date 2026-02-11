@@ -13,7 +13,7 @@ let critereTri = "alpha";
 
 // Fonction pour aller chercher les données de l'API
 async function fetchCountries() {
-  await fetch(`https://restcountries.com/v3.1/all`)
+  await fetch(`https://restcountries.com/v3.1/all?fields=name,capital,cca3,flags,region,population,translations`)
     .then((res) => res.json()) // On transforme la réponse en JSON
     .then((data) => {
       countries = data; // Stocke les données API dans "countries"
