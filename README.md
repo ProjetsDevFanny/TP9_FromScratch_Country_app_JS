@@ -14,7 +14,7 @@ tri et contrôle du nombre de résultats.
 ## API utilisée -> A tester dans le navigateur
 
 Rest Countries v3.1 :
-`https://restcountries.com/v3.1/all?fields=name,capital,cca3,flags,region,population,translations`
+https://restcountries.com/v3.1/all?fields=name,capital,cca3,flags,region,population,translations
 
 ## Fonctionnalités
 
